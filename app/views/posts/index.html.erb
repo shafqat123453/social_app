@@ -1,0 +1,29 @@
+<h1>All Posts</h1>
+<% if !user_signed_in? %>
+<%= link_to "Log In", user_session_path %> | <%= link_to "Sign up", new_user_session_path %>
+<%end%>
+<% if user_signed_in? %>
+<%= link_to 'New Post', new_post_path %>
+<% end %>
+
+<% @posts.each do |post| %>
+  <div>
+    <h2><%= link_to post.title, post %></h2>
+    <p><%= truncate(post.content, length: 100) %></p>
+    <% if user_signed_in? %>
+
+    <p><%= link_to 'Edit', edit_post_path(post) %> | <%= link_to "Delete", post, data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } %></li></p>
+  </div>
+<% end %>
+<% end %>
+
+<% if user_signed_in? %>
+  <%= link_to "Sign Out", destroy_user_session_path, data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } %></li>
+<% end %>
+
